@@ -1,16 +1,36 @@
-import React from "react";
+import { ComponentProps } from "react";
+import { Equal, Expect } from "../helpers/type-utils";
 
-export interface ButtonProps extends React.ComponentProps<"button"> {
-  //Best way to get default element props and add onto existing ones
-  className?: string;
-}
+type OverrideProps<T, TOverridden> = Omit<T, keyof TOverridden> & TOverridden;
 
-export const Button = ({ className, ...rest }: ButtonProps) => {
+type inputProps = OverrideProps<
+  ComponentProps<"input">,
+  { onChange: (value: string) => void }
+>; // Shorted override
+
+export const Input = (
+  props: Omit<ComponentProps<"input">, "onChange"> & {
+    onChange: (value: string) => void;
+  } // How we omit certain fields from a given interface for omission or longer overriding
+) => {
   return (
-    <button {...rest} className={`default-classname ${className}`}></button>
+    <input
+      {...props}
+      onChange={(e) => {
+        props.onChange(e.target.value);
+      }}
+    ></input>
   );
 };
 
 const Parent = () => {
-  return <Button onClick={() => {}} type="button"></Button>;
+  return (
+    <Input
+      onChange={(e) => {
+        console.log(e);
+
+        type test = Expect<Equal<typeof e, string>>;
+      }}
+    ></Input>
+  );
 };
