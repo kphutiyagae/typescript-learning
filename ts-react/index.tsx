@@ -1,17 +1,16 @@
 import React from "react";
 
-interface buttonProps {
-  className: string;
+export interface ButtonProps extends React.ComponentProps<"button"> {
+  //Best way to get default element props and add onto existing ones
+  className?: string;
 }
-export const Button = (props: buttonProps) => {
-  return <button>{props.className}</button>;
+
+export const Button = ({ className, ...rest }: ButtonProps) => {
+  return (
+    <button {...rest} className={`default-classname ${className}`}></button>
+  );
 };
 
-export const Component = () => {
-  return (
-    <div>
-      <p>Hello There</p>
-      <Button className="my-class"></Button>
-    </div>
-  );
+const Parent = () => {
+  return <Button onClick={() => {}} type="button"></Button>;
 };
