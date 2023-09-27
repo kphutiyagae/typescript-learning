@@ -3,6 +3,8 @@ import { Equal, Expect } from "../helpers/type-utils";
 
 type OverrideProps<T, TOverridden> = Omit<T, keyof TOverridden> & TOverridden;
 
+type extractedProps = ComponentProps<typeof Input>; // Extract all the props of a component
+
 type inputProps = OverrideProps<
   ComponentProps<"input">,
   { onChange: (value: string) => void }
